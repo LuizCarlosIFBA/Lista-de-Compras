@@ -1,36 +1,38 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-     COMPRAS
+        Compras
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
   
-  
+  <button ion-button block (click)="GetProduct();"> Listar produtos</button>
 
-  <form [formGroup]="todo" (ngSubmit)="CreateItem()" novalidate>
+  <form [formGroup]="todo" (ngSubmit)="CreateProduct()" novalidate>
     <ion-item>
       <ion-label>Produto</ion-label>
       <ion-input type="text" formControlName="produto"></ion-input>
     </ion-item>
-    
-    <ion-item>
-      <ion-label>Preço</ion-label>
-      <ion-input type="number" formControlName="preco"></ion-input>
+    <ion-item *ngIf="todo.get('produto').errors && todo.get('produto').dirty">
+      <p color="danger" ion-text *ngIf="todo.get('produto').hasError('required')"> Campo obigado</p>
+      <p color="danger" ion-text *ngIf="todo.get('produto').hasError('minlength')"> Quantidade minima de caracteres é (1)</p>
+      <p color="danger" ion-text *ngIf="todo.get('produto').hasError('maxlength')"> Você atingiu a quantidade máxima de caracteres</p>
     </ion-item>
-     
-  </form>
 
-  <button ion-button block  type="submit" [disabled]="!todo.valid"> Adicionar produto</button>
-  <button ion-button block (click)="GetItem();"> Listar produto</button>
+    <ion-item>
+      <ion-label>Preço R$</ion-label>
+      <ion-input type="text" formControlName="preco"></ion-input>
+    </ion-item>
+    <button ion-button type="submit" [disabled]="!todo.valid">Salvar</button>
+  </form>
 
   <ion-list>
     <ion-item-sliding *ngFor="let item of ListUser">
       <ion-item>      
-        <h2>{{item.produto }} {{item.preco}}</h2>
-
+        <h2>{{item.produto }}</h2>
+        <p>{{item.preco}}</p>
       </ion-item>
       <!-- <ion-item-options side="left">
         <button ion-button color="primary">

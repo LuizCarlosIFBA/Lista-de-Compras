@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { DatabaseProvider } from '../../providers/database/database'
+import { DatabaseProvider } from '../../providers/database/database';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
@@ -8,34 +8,34 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
   templateUrl: 'home.html'
 })
 export class HomePage {
+  [x: string]: any;
 
-  private ListProduto: any;  
+  private ListUser : any;  
   private todo: FormGroup;
 
   constructor(public navCtrl: NavController, private database: DatabaseProvider, private formBuilder: FormBuilder) {
 
     this.todo = this.formBuilder.group({
-      produto: ' ',
-      preco: 0.0
-     });
+      poduto: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
+      preco: ['', Validators.required],
+    });
 
   }
-    CreateItem(){
+    CreateProduct(){
+      console.log(this.todo);
       
-      this.database.CreateItem(this.todo.value.produto, this.todo.value.preco).then( (data) => {
+      this.database.CreateProduct(this.todo.value.preco, this.todo.value.produto).then( (data) => {
         console.log(data);
-        this.GetItem();
-        console.log(this.todo);
-
+        this.GetAllProduct();
       }, (error) => {
         console.log(error);
       })
     }
 
-    GetItem(){
-      this.database.GetItem().then((data: any) => {
+    GetProduct(){
+      this.database.GetAllProduct().then((data: any) => {
         console.log(data);
-        this.ListProduto = data;
+        this.ListUser = data;
       }, (error) => {
         console.log(error);
       })
